@@ -114,6 +114,7 @@ export default function App() {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="transition-all overflow-hidden bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {getComponent(getCurrentComponentString())}
+          {console.log("render")}
         </div>
       </div>
     </div>
