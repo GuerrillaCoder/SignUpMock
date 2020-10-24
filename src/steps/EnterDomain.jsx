@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Buttons from "./components/Buttons";
 import TextInput from "./components/TextInput";
 import isValidDomain from "is-valid-domain";
@@ -10,6 +10,7 @@ export default function EnterDomain(props) {
   const [nextEnable, setNextEnable] = useState(props.next);
   const [prevEnable, setPrevEnable] = useState(props.prev);
   const [inProp, setInProp] = useState(true);
+  const domainRef = useRef(null);
 
   function validate(val) {
     // console.log("Validate " + val);
@@ -38,6 +39,7 @@ export default function EnterDomain(props) {
 
   return (
     <CSSTransition
+    nodeRef={domainRef}
       in={inProp}
       // onExited={() => moveNext()}
       timeout={{
@@ -51,7 +53,7 @@ export default function EnterDomain(props) {
         //   val === "free" ? selectedOutAnimation : notSelectedOutAnimation
       }}
     >
-      <div>
+      <div ref={domainRef}>
         <h3 className="font-medium text-xl text-center mb-4">Enter Domain</h3>
         <p className="mb-4">
           Enter the domain that you want to monitor backlinks for (ownership
