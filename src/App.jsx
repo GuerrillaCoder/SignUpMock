@@ -84,6 +84,7 @@ export default function App() {
 
   let movePrev = () => {
     console.log("moving back");
+    console.log(details);
     setDetails((details) => ({
       ...details,
       slideHistory: details.slideHistory.splice(
@@ -95,6 +96,7 @@ export default function App() {
         1
       )
     }));
+    console.log(details);
   };
 
   // let currentComponent = getComponent(getCurrentComponentString());
