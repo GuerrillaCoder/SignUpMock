@@ -12,8 +12,8 @@ export default function App() {
   const [details, setDetails] = useState({
     title: "Create Account",
     step: 1,
-    branchHistory: ["Start"],
-    slideHistory: ["SelectType"],
+    // branchHistory: ["Start"],
+    // slideHistory: ["SelectType"],
     name: null,
     accountType: null,
     domain: null,
@@ -23,12 +23,15 @@ export default function App() {
     gscToken: null
   });
 
+  const [slideHistory, setSlideHistory] = useState(["SelectType"])
+  const [branchHistory, setBranchHistory] = useState(["Start"])
+
   let getCurrentComponentString = () => {
-    return details.slideHistory[details.slideHistory.length - 1];
+    return slideHistory[slideHistory.length - 1];
   };
 
   let getCurrentBranch = () => {
-    return details.branchHistory[details.branchHistory.length - 1];
+    return branchHistory[branchHistory.length - 1];
   };
 
   function getComponent(componentName) {
@@ -66,37 +69,33 @@ export default function App() {
     switch (getCurrentComponentString()) {
       case "SelectType":
         let nextSlide = option === "free" ? "CreateAccount" : "EnterDomain";
+        setSlideHistory((prev) => [...prev, nextSlide])
+        setBranchHistory((prev) => [...prev, option])
         setDetails((details) => ({
           ...details,
-          slideHistory: details.slideHistory.concat(nextSlide),
-          branchHistory: details.branchHistory.concat(option),
           title: option === "free" ? "Create Account" : "Get Started"
         }));
         console.log(details);
         break;
       default:
-        setDetails((details) => {
-          details.slideHistory.push("Error");
-          return details;
-        });
+        setSlideHistory((prev) => [...prev, "Error"])
     }
   };
 
   let movePrev = () => {
     console.log("moving back");
-    console.log(details);
-    setDetails((details) => ({
-      ...details,
-      slideHistory: details.slideHistory.splice(
-        details.slideHistory.length - 1,
-        1
-      ),
-      branchHistory: details.branchHistory.splice(
-        details.branchHistory.length - 1,
-        1
-      )
-    }));
-    console.log(details);
+
+    setSlideHistory((prev) => {
+      const newSH = [...prev]
+      newSH.pop()
+      return newSH
+    })
+
+    setBranchHistory((prev) => {
+      const newBH = [...prev]
+      newBH.pop()
+      return newBH
+    })
   };
 
   // let currentComponent = getComponent(getCurrentComponentString());
