@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import SubHead from "./components/SubHead";
 import { CSSTransition } from "react-transition-group";
 
 export default function SelectType(props) {
   const [inProp, setInProp] = useState(true);
   const [val, setVal] = useState(null);
+  const freeOptionRef = useRef(null);
+  const proOptionRef = useRef(null);
 
   let selectedOutAnimation = "animate__animated animate__fadeOut";
   let notSelectedOutAnimation = "animate__animated animate__fadeOutLeft";
@@ -22,6 +24,7 @@ export default function SelectType(props) {
   return (
     <>
       <CSSTransition
+      nodeRef={freeOptionRef}
         in={inProp}
         onExited={() => moveNext()}
         timeout={{
@@ -35,7 +38,7 @@ export default function SelectType(props) {
             val === "free" ? selectedOutAnimation : notSelectedOutAnimation
         }}
       >
-        <div>
+        <div ref={freeOptionRef}>
           <SubHead text="Free Account" />
 
           <div className="w-8/12 mx-auto mt-4">
@@ -72,6 +75,7 @@ export default function SelectType(props) {
       </CSSTransition>
 
       <CSSTransition
+      nodeRef={proOptionRef}
         in={inProp}
         onExited={() => moveNext()}
         timeout={{
@@ -85,7 +89,7 @@ export default function SelectType(props) {
             val === "pro" ? selectedOutAnimation : notSelectedOutAnimation
         }}
       >
-        <div className="mt-6">
+        <div ref={proOptionRef} className="mt-6">
           <div className="relative mb-4">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300" />
