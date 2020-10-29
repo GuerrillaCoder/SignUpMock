@@ -5,20 +5,28 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "email-validator": "^2.0.4",
     "is-valid-domain": "0.0.15",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-hook-form": "^6.9.6",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.3",
     "react-transition-group": "4.4.1"
   },
   "devDependencies": {
+    "@tailwindcss/ui": "^0.6.2",
+    "autoprefixer": "^10.0.1",
     "cross-env": "^7.0.2",
+    "postcss": "^8.1.4",
+    "postcss-cli": "^8.1.0",
+    "tailwindcss": "^1.9.6",
     "typescript": "3.8.3"
   },
   "scripts": {
     "start": "cross-env PORT=6888 react-scripts start",
     "build": "react-scripts build",
+    "build:tailwind": "postcss src/tailwind.css -o public/css/tailwind.css",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

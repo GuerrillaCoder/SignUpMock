@@ -41,6 +41,7 @@ export default function Buttons(props) {
         <button
           type="button"
           className={props.next === true ? nextEnabled : nextDisabled}
+          onClick={props.moveNext}
         >
           Next
           <svg

@@ -12,10 +12,24 @@ export default function EnterDomain(props) {
   const [inProp, setInProp] = useState(true);
   const domainRef = useRef(null);
 
+  const [showValidation, setShowValidation] = useState(false);
+
   function validate(val) {
     // console.log("Validate " + val);
-    if (!isUrl(val)) setValMessage("");
-    else setValMessage("invisible");
+    // if (!isUrl(val)) {
+    //   setValMessage("");
+    // }
+    // else {
+    //   setValMessage("invisible");
+    // }
+
+    if (!isUrl(val) && !showValidation) {
+      setShowValidation(true);
+    }
+    
+    if (isUrl(val) && showValidation) {
+      setShowValidation(false);
+    }
   }
 
   function handleChange(event) {
@@ -23,11 +37,12 @@ export default function EnterDomain(props) {
       // console.log(event.target.value + " is url");
       setNextEnable(true);
     } else {
-      if (nextEnable === true) setNextEnable(false);
+      setNextEnable(false);
       // console.log(event.target.value + " is NOT url");
     }
-    clearTimeout(this.validateTimer);
-    this.validateTimer = setTimeout(
+    
+    clearTimeout(window.validateTimer);
+    window.validateTimer = setTimeout(
       (val) => {
         // console.log("Trigger:" + val);
         validate(val);
@@ -59,21 +74,14 @@ export default function EnterDomain(props) {
           Enter the domain that you want to monitor backlinks for (ownership
           verification with GSC is required for free accounts)
         </p>
-        <div className="mt-1 rounded-md shadow-sm">
-          <input
-            onChange={handleChange}
-            id="track-domain"
-            type="text"
-            placeholder="https://example.com"
-            required
-            className=" appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-          />
-        </div>
-        <p className={valMessage + " validation text-sm mb-4 text-red-600"}>
-          Please enter a valid domain to continue
-        </p>
-        <TextInput />
-        <TextInput />
+
+        <TextInput 
+          showValidation={showValidation} 
+          valMessage="Please enter a valid domain to continue"  
+          placeHolder="https://example.com"
+          label="Domain"
+          onChange={(event) => handleChange(event)}
+        />
         <p className="mb-8 text-sm italic">
           You will be able to add in more domains to track later
         </p>

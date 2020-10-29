@@ -29,7 +29,7 @@ export default function SelectType(props) {
         onExited={() => moveNext()}
         timeout={{
           appear: 2000,
-          exit: 1000
+          exit: 750
         }}
         appear={true}
         classNames={{

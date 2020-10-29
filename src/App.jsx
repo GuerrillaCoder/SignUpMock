@@ -5,6 +5,8 @@ import SelectType from "./steps/SelectType";
 import EnterDomaiun from "./steps/EnterDomain";
 import Error from "./steps/Error";
 import CreateAccount from "./steps/CreateAccount";
+import GscVerify from './steps/GscVerify';
+import SelectGscDomains from "./steps/SelectGscDomains";
 
 class slide {}
 
@@ -23,8 +25,8 @@ export default function App() {
     gscToken: null
   });
 
-  const [slideHistory, setSlideHistory] = useState(["SelectType"])
-  const [branchHistory, setBranchHistory] = useState(["Start"])
+  const [slideHistory, setSlideHistory] = useState(["SelectType", "CreateAccount", "GscVerify", "SelectGscDomains"])
+  const [branchHistory, setBranchHistory] = useState(["Start", "Free", "Free", "Free"])
 
   let getCurrentComponentString = () => {
     return slideHistory[slideHistory.length - 1];
@@ -57,6 +59,24 @@ export default function App() {
             prev={true}
           />
         );
+        case "GscVerify":
+        return (
+          <GscVerify
+            moveNext={moveNext}
+            movePrev={movePrev}
+            next={true}
+            prev={false}
+          />
+        );
+        case "SelectGscDomains":
+          return (
+            <SelectGscDomains
+              moveNext={moveNext}
+              movePrev={movePrev}
+              next={false}
+              prev={true}
+            />
+          );
 
       default:
         return <Error startAgain="SelectType" />;
@@ -77,6 +97,22 @@ export default function App() {
         }));
         console.log(details);
         break;
+      case "CreateAccount":
+        setSlideHistory((prev) => [...prev, "GscVerify"]);
+        setBranchHistory((prev) => [...prev, getCurrentBranch()]);
+        setDetails((details) => ({
+          ...details,
+          title: "Import Domains"
+        }));
+        break;
+        case "GscVerify":
+          setSlideHistory((prev) => [...prev, "SelectGscDomains"]);
+          setBranchHistory((prev) => [...prev, getCurrentBranch()]);
+          setDetails((details) => ({
+            ...details,
+            title: "Select Domains"
+          }));
+          break;
       default:
         setSlideHistory((prev) => [...prev, "Error"])
     }
