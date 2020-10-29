@@ -7,6 +7,7 @@ import Error from "./steps/Error";
 import CreateAccount from "./steps/CreateAccount";
 import GscVerify from './steps/GscVerify';
 import SelectGscDomains from "./steps/SelectGscDomains";
+import SetupComplete from "./steps/SetupComplete";
 
 class slide {}
 
@@ -25,8 +26,10 @@ export default function App() {
     gscToken: null
   });
 
-  const [slideHistory, setSlideHistory] = useState(["SelectType", "CreateAccount", "GscVerify", "SelectGscDomains"])
-  const [branchHistory, setBranchHistory] = useState(["Start", "Free", "Free", "Free"])
+  // const [slideHistory, setSlideHistory] = useState(["SelectType", "CreateAccount", "GscVerify", "SelectGscDomains"])
+  // const [branchHistory, setBranchHistory] = useState(["Start", "Free", "Free", "Free"])
+  const [slideHistory, setSlideHistory] = useState(["SelectType"])
+  const [branchHistory, setBranchHistory] = useState(["Start"])
 
   let getCurrentComponentString = () => {
     return slideHistory[slideHistory.length - 1];
@@ -77,6 +80,12 @@ export default function App() {
               prev={true}
             />
           );
+          case "SetupComplete":
+          return (
+            <SetupComplete
+
+            />
+          );
 
       default:
         return <Error startAgain="SelectType" />;
@@ -111,6 +120,14 @@ export default function App() {
           setDetails((details) => ({
             ...details,
             title: "Select Domains"
+          }));
+          break;
+          case "SelectGscDomains":
+          setSlideHistory((prev) => [...prev, "SetupComplete"]);
+          setBranchHistory((prev) => [...prev, getCurrentBranch()]);
+          setDetails((details) => ({
+            ...details,
+            title: "Setup Complete"
           }));
           break;
       default:

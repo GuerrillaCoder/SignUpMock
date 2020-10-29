@@ -4,6 +4,7 @@ import SubHead from "./components/SubHead";
 import TextInput from "./components/TextInput";
 import * as EmailValidator from 'email-validator';
 import { CSSTransition } from "react-transition-group";
+import useInProp from './hooks/useInProp'; 
 
 export default function CreateAccount(props) {
 
@@ -12,11 +13,9 @@ export default function CreateAccount(props) {
     const [emailValidationMessage, setEmailValidationMessage] = useState(null);
     const [passValidationMessage, setPassValidationMessage] = useState(null);
     const slideRef= useRef(null);
-    const [inProp, setInProp] = useState(true);
+    // const [inProp, setInProp] = useState(true);
 
-    function nextEnable() {
-        return false;
-    }
+    const [inProp, val, setValue, exit] = useInProp(props.movePrev, props.moveNext);
 
     function validateEmail(event) {
         clearTimeout(window.validateTimer);

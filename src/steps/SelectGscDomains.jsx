@@ -57,9 +57,11 @@ export default function SelectGscDomains(props) {
                 "one focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 tra" +
                 "nsition ease-in-out duration-150";
 
+                const showMessage = selected.length >= 3 ? "" : "opacity-0"
+
     return (
         <div className="">
-            <SubHead text={remaining + " domains remaining"} extraClasses="mb-4"/>
+            <SubHead text={remaining + " Free domains remaining"} extraClasses="mb-4"/>
             <div
                 className="p-4 border border-gray-300 max-h-300 scroll-y overflow-hidden overflow-y-auto">
 
@@ -78,7 +80,7 @@ export default function SelectGscDomains(props) {
                     )
                 })}
             </div>
-            <p className="italic mt-3">Domain limit can be increased for $7 per domain</p>
+            <p className={"italic mt-3 w-2/3 mx-auto transition-all duration-500 " + showMessage}>Domain limit can be increased for $7 per domain after setup</p>
             <div className="text-center mt-6">
                 <button onClick={props.moveNext} className={buttonStyle}>
                     Add Domains

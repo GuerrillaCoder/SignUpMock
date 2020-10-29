@@ -1,32 +1,36 @@
 import React, { useState, useRef } from "react";
 import SubHead from "./components/SubHead";
 import { CSSTransition } from "react-transition-group";
+import useInProp from './hooks/useInProp'; 
 
 export default function SelectType(props) {
-  const [inProp, setInProp] = useState(true);
-  const [val, setVal] = useState(null);
+  // const [inProp, setInProp] = useState(true);
+  // const [val, setVal] = useState(null);
   const freeOptionRef = useRef(null);
   const proOptionRef = useRef(null);
+
+  const [inProp, val, setValue, exit] = useInProp();
 
   let selectedOutAnimation = "animate__animated animate__fadeOut";
   let notSelectedOutAnimation = "animate__animated animate__fadeOutLeft";
 
-  function moveNext() {
-    console.log("Moving next from SelectType value: " + val);
-    props.moveNext(val);
-  }
+  // function moveNext() {
+  //   console.log("Moving next from SelectType value: " + val);
+  //   props.moveNext(val);
+  // }
 
-  function handleMove(val) {
-    setVal(val);
-    setInProp(false);
-  }
+  // function handleMove(val) {
+  //   setVal(val);
+  //   setInProp(false);
+  // }
 
   return (
     <>
       <CSSTransition
       nodeRef={freeOptionRef}
         in={inProp}
-        onExited={() => moveNext()}
+        // onExited={() => moveNext()}
+        onExited={() => props.moveNext(val)}
         timeout={{
           appear: 2000,
           exit: 750
@@ -53,7 +57,8 @@ export default function SelectType(props) {
           </div>
 
           <button
-            onClick={() => handleMove("free")}
+            // onClick={() => handleMove("free")}
+            onClick={() => setValue("free")}
             type="submit"
             className="mt-8 mx-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
           >
@@ -77,7 +82,8 @@ export default function SelectType(props) {
       <CSSTransition
       nodeRef={proOptionRef}
         in={inProp}
-        onExited={() => moveNext()}
+        // onExited={() => moveNext()}
+        onClick={() => setValue("Pro")}
         timeout={{
           appear: 2000,
           exit: 1000
@@ -112,7 +118,7 @@ export default function SelectType(props) {
           <button
             type="submit"
             className="mt-8 mx-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-            onClick={() => handleMove("pro")}
+            onClick={() => setValue("pro")}
           >
             Choose Pro ($7)
             <svg
