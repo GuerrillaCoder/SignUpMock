@@ -5,19 +5,19 @@ export default function useInProp(movePrev, moveNext)
     const [inProp, setInProp] = useState(true);
     const [val, setVal] = useState(null);
     const [moveDirection, setMoveDirection] = useState(null);
-    // function handleMoveNext(val)
-    // {
-    //     moveNext(val);
-    // }
+    function handleMoveNext(val)
+    {
+        moveNext(val);
+    }
 
-    // if(moveDirection === "next")
-    // {
-    //     moveNext(val);
-    // }
-    // else if(moveDirection === "prev")
-    // {
-    //     movePrev(val);
-    // }
+    if(moveDirection === "next")
+    {
+        moveNext(val);
+    }
+    else if(moveDirection === "prev")
+    {
+        movePrev(val);
+    }
 
 
     function setValue(val)
