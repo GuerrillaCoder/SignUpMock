@@ -15,7 +15,8 @@ export default function CreateAccount(props) {
     const slideRef= useRef(null);
     // const [inProp, setInProp] = useState(true);
 
-    const [inProp, val, setValue, exit] = useInProp(props.movePrev, props.moveNext);
+
+    const [inProp, val, startMove, move] = useInProp(props.movePrev, props.moveNext);
 
     function validateEmail(event) {
         clearTimeout(window.validateTimer);
@@ -45,15 +46,15 @@ export default function CreateAccount(props) {
       <CSSTransition
       nodeRef={slideRef}
         in={inProp}
-        // onExited={() => moveNext()}
+        onExited={() => move()}
         timeout={{
           appear: 2000,
           exit: 1000
         }}
         appear={true}
         classNames={{
-          appearActive: "animate__animated animate__slideInRight"
-          // exitActive:
+          appearActive: "animate__animated animate__slideInRight",
+          exitActive: "animate__animated animate__backOutDown"
           //   val === "free" ? selectedOutAnimation : notSelectedOutAnimation
         }}
       >
@@ -89,8 +90,12 @@ export default function CreateAccount(props) {
                 <Buttons
                     back={true}
                     next={emailValid && passValid}
-                    movePrev={props.movePrev}
-                    moveNext={props.moveNext}/>
+                    // movePrev={props.movePrev}
+                    // moveNext={props.moveNext}
+                    movePrev={startMove("prev")}
+                    moveNext={startMove("next")}
+                    
+                    />
                 <div className="mt-6">
                     <div className="relative">
                         <div className="absolute inset-0 flex items-center">
