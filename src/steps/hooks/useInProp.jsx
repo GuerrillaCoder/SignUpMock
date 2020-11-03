@@ -27,5 +27,5 @@ export default function useInProp(movePrev, moveNext) {
         setInProp(false);
     }
 
-    return [inProp, startMoveback, startMoveNext, move, moveDirection, moveValue]
+    return {inProp, startMoveback, startMoveNext, move, moveDirection, moveValue}
 }

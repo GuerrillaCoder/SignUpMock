@@ -15,9 +15,9 @@ export default function App() {
     title: "Create Account",
     name: null,
     accountType: null,
-    domain: null,
+    domains: [],
     links: null,
-    username: null,
+    email: null,
     password: null,
     gscToken: null
   });
@@ -63,7 +63,7 @@ export default function App() {
       component: <GscVerify prev={false} next={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
       next: "SelectGscDomains",
       height:{
-        0: "500px"
+        0: "310px"
       }
     },
     SelectGscDomains : {
@@ -71,12 +71,12 @@ export default function App() {
       component: <SelectGscDomains prev={false} showPrev={false} next={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
       next: "SetupComplete",
       height:{
-        0: "500px"
+        0: "540px"
       }
     },
     SetupComplete: {
       title: "Setup Complete",
-      component: <SetupComplete />,
+      component: <SetupComplete state={details} />,
       height:{
         0: "500px"
       }
@@ -140,7 +140,7 @@ export default function App() {
           alt="Workflow"
         />
         <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-          {details.title}
+          {slideConnections[currentSlide].title}
         </h2>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

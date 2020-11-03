@@ -1,14 +1,21 @@
 import React, {useState} from "react";
+import { isGetAccessor } from "typescript";
 
 export default function Buttons({
-    moveNext,
-    movePrev,
+    moveNext: parentMoveNext,
+    movePrev: parentMovePrev,
     back,
     next,
     showPrev = true,
     showNext = true
 }) {
     // const [status, setStatus] = useState({ });
+    function moveNext(){
+      if(next) parentMoveNext();
+    }
+    function movePrev(){
+      if(back) parentMovePrev();
+    }
 
     let nextEnabled = "inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 f" +
             "ont-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline" +
@@ -16,7 +23,7 @@ export default function Buttons({
             "ransition ease-in-out duration-150";
     let nextDisabled = "cursor-not-allowed  inline-flex items-center px-4 py-2 border border-transparent" +
             " text-sm leading-5 font-medium rounded-md text-white bg-gray-300 focus:outline-n" +
-            "one focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 tra" +
+            "one  tra" +
             "nsition ease-in-out duration-150";
     let backEnabled = "inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-4 font" +
             "-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none" +

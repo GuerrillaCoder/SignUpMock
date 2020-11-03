@@ -15,7 +15,7 @@ export default function CreateAccount({state, setState, moveNext : parentMoveNex
     const slideRef= useRef(null);
 
 
-    const [inProp, startMoveback, startMoveNext, move, moveDirection, moveValue] = useInProp(parentMovePrev, parentMoveNext);
+    const {inProp, startMoveback, startMoveNext, move, moveDirection, moveValue} = useInProp(parentMovePrev, parentMoveNext);
 
     function validateEmail(event) {
 
@@ -23,16 +23,14 @@ export default function CreateAccount({state, setState, moveNext : parentMoveNex
         // if (EmailValidator.validate(email)) 
         setState(prev => ({...prev, email: email}));
 
+        let valid = EmailValidator.validate(email)
+        setEmailValid(valid);
+
         clearTimeout(window.validateTimer);
         window.validateTimer = setTimeout((val) => {
-            if (EmailValidator.validate(val)) {
-                setEmailValid(true);
-                
-            } else {
-                setEmailValidationMessage("Please enter a valid email address")
-                setEmailValid(false);
-            }
-        }, 1000, email);
+            if (!val) setEmailValidationMessage("Please enter a valid email address");
+            
+        }, 1000, valid);
     }
 
     function validatePass(event) {
@@ -41,15 +39,13 @@ export default function CreateAccount({state, setState, moveNext : parentMoveNex
         console.log({...state, password: pass});
         setState(prev => ({...prev, password: pass}));
 
+        let valid = pass.length >= 6
+        setPassValid(valid);
+
         clearTimeout(window.validateTimer);
         window.validateTimer = setTimeout((val) => {
-            if (val.length >= 6) {
-                setPassValid(true);
-            } else {
-                setPassValidationMessage("Password must be 6 or more characters");
-                setPassValid(false);
-            }
-        }, 1000, pass);
+            if(!val) setPassValidationMessage("Password must be 6 or more characters");
+        }, 1000, valid);
     }
 
     return (
@@ -64,7 +60,7 @@ export default function CreateAccount({state, setState, moveNext : parentMoveNex
         appear={true}
         classNames={{
           appearActive: entryDirection === "next" ?  "animate__animated animate__slideInRight" : "animate__animated animate__slideInLeft",
-          exitActive:  moveDirection == "next" ? "animate__animated animate__fadeOutLeft" : "animate__animated animate__fadeOutRight"
+          exitActive:  moveDirection === "next" ? "animate__animated animate__fadeOutLeft" : "animate__animated animate__fadeOutRight"
         }}
       >
         <div ref={slideRef}>

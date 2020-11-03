@@ -9,7 +9,7 @@ export default function SelectType({state, setState, moveNext : parentMoveNext, 
   const freeOptionRef = useRef(null);
   const proOptionRef = useRef(null);
 
-  const [inProp, startMoveback, startMoveNext, move, moveDirection, moveValue] = useInProp(parentMovePrev, parentMoveNext);
+  const {inProp, startMoveback, startMoveNext, move, moveDirection, moveValue} = useInProp(parentMovePrev, parentMoveNext);
 
   let selectedOutAnimation = "animate__animated animate__fadeOut";
   let notSelectedOutAnimation = "animate__animated animate__fadeOutLeft";
@@ -23,6 +23,14 @@ export default function SelectType({state, setState, moveNext : parentMoveNext, 
   //   setVal(val);
   //   setInProp(false);
   // }
+
+  function handleClick(account){
+
+    setState(prev => ({...prev, accountType: account}))
+
+    startMoveNext(account);
+
+  }
 
   return (
     <>
@@ -43,7 +51,7 @@ export default function SelectType({state, setState, moveNext : parentMoveNext, 
         }}
       >
         <div ref={freeOptionRef}>
-          <SubHead text="Free Account" />
+          <SubHead text="Free" />
 
           <div className="w-8/12 mx-auto mt-4">
             <ul className="list-disc">
@@ -58,7 +66,7 @@ export default function SelectType({state, setState, moveNext : parentMoveNext, 
 
           <button
             // onClick={() => handleMove("free")}
-            onClick={() => startMoveNext("free")}
+            onClick={() => handleClick("free")}
             type="submit"
             className="mt-8 mx-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
           >
@@ -105,7 +113,7 @@ export default function SelectType({state, setState, moveNext : parentMoveNext, 
             </div>
           </div>
 
-          <SubHead text="Pro Account" />
+          <SubHead text="Pro" />
 
           <div className="w-8/12 mx-auto mt-4">
             <ul className="list-disc">
@@ -118,7 +126,7 @@ export default function SelectType({state, setState, moveNext : parentMoveNext, 
           <button
             type="submit"
             className="mt-8 mx-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-            onClick={() => startMoveNext("pro")}
+            onClick={() => handleClick("pro")}
           >
             Choose Pro ($7)
             <svg
