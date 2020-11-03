@@ -9,14 +9,10 @@ import GscVerify from './steps/GscVerify';
 import SelectGscDomains from "./steps/SelectGscDomains";
 import SetupComplete from "./steps/SetupComplete";
 
-class slide {}
 
 export default function App() {
   const [details, setDetails] = useState({
     title: "Create Account",
-    step: 1,
-    // branchHistory: ["Start"],
-    // slideHistory: ["SelectType"],
     name: null,
     accountType: null,
     domain: null,
@@ -26,117 +22,89 @@ export default function App() {
     gscToken: null
   });
 
-  // const [slideHistory, setSlideHistory] = useState(["SelectType", "CreateAccount", "GscVerify", "SelectGscDomains"])
-  // const [branchHistory, setBranchHistory] = useState(["Start", "Free", "Free", "Free"])
-  const [slideHistory, setSlideHistory] = useState(["SelectType"])
-  const [branchHistory, setBranchHistory] = useState(["Start"])
+  const [currentSlide, setCurrentSlide] = useState("SelectType");
+  const [lastValue, setLastValue] = useState(null);
+  const [formState, setFormState] = useState({name: ""});
+  const [slideHistory, setSlideHistory] = useState([])
+  const [entryDirection, setEntryDirection] = useState("next");
 
   let getCurrentComponentString = () => {
     return slideHistory[slideHistory.length - 1];
   };
 
-  let getCurrentBranch = () => {
-    return branchHistory[branchHistory.length - 1];
-  };
-
-  function getComponent(componentName) {
-    console.log("name: " + componentName);
-    switch (componentName) {
-      case "SelectType":
-        return <SelectType moveNext={moveNext} />;
-      case "EnterDomain":
-        return (
-          <EnterDomaiun
-            moveNext={moveNext}
-            movePrev={movePrev}
-            next={false}
-            prev={true}
-          />
-        );
-      case "CreateAccount":
-        return (
-          <CreateAccount
-            moveNext={moveNext}
-            movePrev={movePrev}
-            next={false}
-            prev={true}
-          />
-        );
-        case "GscVerify":
-        return (
-          <GscVerify
-            moveNext={moveNext}
-            movePrev={movePrev}
-            next={true}
-            prev={false}
-          />
-        );
-        case "SelectGscDomains":
-          return (
-            <SelectGscDomains
-              moveNext={moveNext}
-              movePrev={movePrev}
-              next={false}
-              prev={true}
-            />
-          );
-          case "SetupComplete":
-          return (
-            <SetupComplete
-
-            />
-          );
-
-      default:
-        return <Error startAgain="SelectType" />;
+  const slideConnections = {
+    SelectType : {
+      title: "Get Started",
+      component: <SelectType prev={false} next={true} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
+      free: "CreateAccount",
+      pro: "EnterDomain",
+      height:{
+        0: "600px"
+      }
+    },
+    EnterDomain: {
+      title: "Get Started",
+      component: <EnterDomaiun prev={true} next={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
+      height:{
+        0: "370px"
+      }
+      //todo
+    },
+    CreateAccount: {
+      title: "Create Account",
+      component: <CreateAccount prev={true} next={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
+      next: "GscVerify",
+      height:{
+        0: "640px"
+      }
+    },
+    GscVerify: {
+      title: "Import Domains",
+      component: <GscVerify prev={false} next={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
+      next: "SelectGscDomains",
+      height:{
+        0: "500px"
+      }
+    },
+    SelectGscDomains : {
+      title: "Select Domains",
+      component: <SelectGscDomains prev={false} showPrev={false} next={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
+      next: "SetupComplete",
+      height:{
+        0: "500px"
+      }
+    },
+    SetupComplete: {
+      title: "Setup Complete",
+      component: <SetupComplete />,
+      height:{
+        0: "500px"
+      }
     }
   }
 
-  let moveNext = (option) => {
-    console.log("moving next: " + getCurrentComponentString());
-    console.log(details);
-    switch (getCurrentComponentString()) {
-      case "SelectType":
-        let nextSlide = option === "free" ? "CreateAccount" : "EnterDomain";
-        setSlideHistory((prev) => [...prev, nextSlide])
-        setBranchHistory((prev) => [...prev, option])
-        setDetails((details) => ({
-          ...details,
-          title: option === "free" ? "Create Account" : "Get Started"
-        }));
-        console.log(details);
-        break;
-      case "CreateAccount":
-        setSlideHistory((prev) => [...prev, "GscVerify"]);
-        setBranchHistory((prev) => [...prev, getCurrentBranch()]);
-        setDetails((details) => ({
-          ...details,
-          title: "Import Domains"
-        }));
-        break;
-        case "GscVerify":
-          setSlideHistory((prev) => [...prev, "SelectGscDomains"]);
-          setBranchHistory((prev) => [...prev, getCurrentBranch()]);
-          setDetails((details) => ({
-            ...details,
-            title: "Select Domains"
-          }));
-          break;
-          case "SelectGscDomains":
-          setSlideHistory((prev) => [...prev, "SetupComplete"]);
-          setBranchHistory((prev) => [...prev, getCurrentBranch()]);
-          setDetails((details) => ({
-            ...details,
-            title: "Setup Complete"
-          }));
-          break;
-      default:
-        setSlideHistory((prev) => [...prev, "Error"])
-    }
-  };
+  function getSlide(){
 
-  let movePrev = () => {
-    console.log("moving back");
+    console.log("Current slide: " + currentSlide);
+    return slideConnections[currentSlide].component;
+
+  }
+
+  function moveNext(val = null){
+
+    setSlideHistory(prev => [...prev, currentSlide]);
+
+    if(val === null){
+      setCurrentSlide(prev => slideConnections[prev].next)
+    }
+    else{
+      setCurrentSlide(prev => slideConnections[prev][val])
+    }
+    
+    setLastValue(val);
+  }
+
+  function movePrev(){
 
     setSlideHistory((prev) => {
       const newSH = [...prev]
@@ -144,12 +112,22 @@ export default function App() {
       return newSH
     })
 
-    setBranchHistory((prev) => {
-      const newBH = [...prev]
-      newBH.pop()
-      return newBH
-    })
-  };
+    setCurrentSlide(slideHistory[slideHistory.length - 1]);
+  }
+
+  function getHeight(height) {
+    let h = "";
+
+    for (const w in height) {
+      if (w < window.innerWidth) h = height[w];
+    }
+
+    return h;
+  }
+
+  const wizardStyle = {
+    height: getHeight(slideConnections[currentSlide].height)
+  }
 
   // let currentComponent = getComponent(getCurrentComponentString());
 
@@ -166,8 +144,8 @@ export default function App() {
         </h2>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="transition-all overflow-hidden bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {getComponent(getCurrentComponentString())}
+        <div style={wizardStyle} className="transition-all duration-500 ease-in-out  overflow-hidden bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {getSlide()}
           {console.log("render")}
         </div>
       </div>

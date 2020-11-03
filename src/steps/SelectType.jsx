@@ -3,13 +3,13 @@ import SubHead from "./components/SubHead";
 import { CSSTransition } from "react-transition-group";
 import useInProp from './hooks/useInProp'; 
 
-export default function SelectType(props) {
+export default function SelectType({state, setState, moveNext : parentMoveNext, movePrev: parentMovePrev, entryDirection, prev, showPrev, showNext}) {
   // const [inProp, setInProp] = useState(true);
   // const [val, setVal] = useState(null);
   const freeOptionRef = useRef(null);
   const proOptionRef = useRef(null);
 
-  const [inProp, val, setValue, exit] = useInProp();
+  const [inProp, startMoveback, startMoveNext, move, moveDirection, moveValue] = useInProp(parentMovePrev, parentMoveNext);
 
   let selectedOutAnimation = "animate__animated animate__fadeOut";
   let notSelectedOutAnimation = "animate__animated animate__fadeOutLeft";
@@ -30,7 +30,7 @@ export default function SelectType(props) {
       nodeRef={freeOptionRef}
         in={inProp}
         // onExited={() => moveNext()}
-        onExited={() => props.moveNext(val)}
+        onExited={move}
         timeout={{
           appear: 2000,
           exit: 750
@@ -39,7 +39,7 @@ export default function SelectType(props) {
         classNames={{
           appearActive: "animate__animated animate__zoomIn",
           exitActive:
-            val === "free" ? selectedOutAnimation : notSelectedOutAnimation
+          moveValue === "free" ? selectedOutAnimation : notSelectedOutAnimation
         }}
       >
         <div ref={freeOptionRef}>
@@ -58,7 +58,7 @@ export default function SelectType(props) {
 
           <button
             // onClick={() => handleMove("free")}
-            onClick={() => setValue("free")}
+            onClick={() => startMoveNext("free")}
             type="submit"
             className="mt-8 mx-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
           >
@@ -83,7 +83,7 @@ export default function SelectType(props) {
       nodeRef={proOptionRef}
         in={inProp}
         // onExited={() => moveNext()}
-        onClick={() => setValue("Pro")}
+        onExited={move}
         timeout={{
           appear: 2000,
           exit: 1000
@@ -92,7 +92,7 @@ export default function SelectType(props) {
         classNames={{
           appearActive: "animate__animated animate__zoomIn",
           exitActive:
-            val === "pro" ? selectedOutAnimation : notSelectedOutAnimation
+          moveValue === "pro" ? selectedOutAnimation : notSelectedOutAnimation
         }}
       >
         <div ref={proOptionRef} className="mt-6">
@@ -118,7 +118,7 @@ export default function SelectType(props) {
           <button
             type="submit"
             className="mt-8 mx-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-            onClick={() => setValue("pro")}
+            onClick={() => startMoveNext("pro")}
           >
             Choose Pro ($7)
             <svg

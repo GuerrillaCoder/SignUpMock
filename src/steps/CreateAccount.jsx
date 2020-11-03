@@ -6,56 +6,65 @@ import * as EmailValidator from 'email-validator';
 import { CSSTransition } from "react-transition-group";
 import useInProp from './hooks/useInProp'; 
 
-export default function CreateAccount(props) {
+export default function CreateAccount({state, setState, moveNext : parentMoveNext, movePrev: parentMovePrev, entryDirection, prev, showPrev, showNext}) {
 
     const [emailValid, setEmailValid] = useState(false);
     const [passValid, setPassValid] = useState(false);
     const [emailValidationMessage, setEmailValidationMessage] = useState(null);
     const [passValidationMessage, setPassValidationMessage] = useState(null);
     const slideRef= useRef(null);
-    // const [inProp, setInProp] = useState(true);
 
 
-    const [inProp, val, startMove, move] = useInProp(props.movePrev, props.moveNext);
+    const [inProp, startMoveback, startMoveNext, move, moveDirection, moveValue] = useInProp(parentMovePrev, parentMoveNext);
 
     function validateEmail(event) {
+
+        let email = event.target.value;
+        // if (EmailValidator.validate(email)) 
+        setState(prev => ({...prev, email: email}));
+
         clearTimeout(window.validateTimer);
         window.validateTimer = setTimeout((val) => {
             if (EmailValidator.validate(val)) {
                 setEmailValid(true);
+                
             } else {
                 setEmailValidationMessage("Please enter a valid email address")
                 setEmailValid(false);
             }
-        }, 1000, event.target.value);
+        }, 1000, email);
     }
 
     function validatePass(event) {
+
+        let pass = event.target.value;
+        console.log({...state, password: pass});
+        setState(prev => ({...prev, password: pass}));
+
         clearTimeout(window.validateTimer);
         window.validateTimer = setTimeout((val) => {
             if (val.length >= 6) {
                 setPassValid(true);
             } else {
-                setPassValidationMessage("Password must be 6 or more characters")
+                setPassValidationMessage("Password must be 6 or more characters");
                 setPassValid(false);
             }
-        }, 1000, event.target.value);
+        }, 1000, pass);
     }
 
     return (
       <CSSTransition
       nodeRef={slideRef}
         in={inProp}
-        onExited={() => move()}
+        onExited={move}
         timeout={{
           appear: 2000,
           exit: 1000
         }}
         appear={true}
         classNames={{
-          appearActive: "animate__animated animate__slideInRight",
-          exitActive: "animate__animated animate__backOutDown"
-          //   val === "free" ? selectedOutAnimation : notSelectedOutAnimation
+          appearActive: entryDirection === "next" ?  "animate__animated animate__slideInRight" : "animate__animated animate__slideInLeft",
+          exitActive:  moveDirection == "next" ? "animate__animated animate__fadeOutLeft" : "animate__animated animate__fadeOutRight"
         }}
       >
         <div ref={slideRef}>
@@ -67,6 +76,7 @@ export default function CreateAccount(props) {
                         <TextInput
                             showValidation={(emailValid === false && emailValidationMessage !== null)}
                             valMessage={emailValidationMessage}
+                            defaultValue={state.email}
                             type="email"
                             id="email"
                             required={true}
@@ -78,6 +88,7 @@ export default function CreateAccount(props) {
                             showValidation={(passValid === false && passValidationMessage !== null)}
                             // showValidation={true}
                             valMessage={passValidationMessage}
+                            defaultValue={state.password}
                             type="password"
                             id="password"
                             required={true}
@@ -92,8 +103,8 @@ export default function CreateAccount(props) {
                     next={emailValid && passValid}
                     // movePrev={props.movePrev}
                     // moveNext={props.moveNext}
-                    movePrev={startMove("prev")}
-                    moveNext={startMove("next")}
+                    movePrev={startMoveback}
+                    moveNext={startMoveNext}
                     
                     />
                 <div className="mt-6">
@@ -108,10 +119,10 @@ export default function CreateAccount(props) {
                         </div>
                     </div>
                     <div className="text-center w-3/4 mx-auto">
-                        <img onClick={props.moveNext} className="mx-auto h-14 mt-3" src="img/google-signin.png" alt=""/>
-                        <img onClick={props.moveNext} className="mx-auto h-12 mt-3" src="img/facebook_login.png" alt=""/>
-                        <img onClick={props.moveNext} className="mx-auto mt-3" src="img/signin-button-linkedin.png" alt=""/>
-                        <img onClick={props.moveNext} className="mx-auto mt-3" src="img/sign-in-with-twitter.png" alt=""/>
+                        <img onClick={startMoveNext} className="mx-auto h-14 mt-3" src="img/google-signin.png" alt=""/>
+                        <img onClick={startMoveNext} className="mx-auto h-12 mt-3" src="img/facebook_login.png" alt=""/>
+                        <img onClick={startMoveNext} className="mx-auto mt-3" src="img/signin-button-linkedin.png" alt=""/>
+                        <img onClick={startMoveNext} className="mx-auto mt-3" src="img/sign-in-with-twitter.png" alt=""/>
                     </div>
 
                 </div>
