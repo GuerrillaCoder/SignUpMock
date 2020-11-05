@@ -18,6 +18,7 @@
     "@tailwindcss/ui": "^0.6.2",
     "autoprefixer": "^10.0.1",
     "cross-env": "^7.0.2",
+    "lodash": "^4.17.20",
     "postcss": "^8.1.4",
     "postcss-cli": "^8.1.0",
     "tailwindcss": "^1.9.6",

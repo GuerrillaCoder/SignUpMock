@@ -30,7 +30,7 @@ export default function TextInput(props) {
           
         />
         </div>
-        <div className="h-6">
+        <div className={(props.hideValidation ? "hidden" : "") + " h-6"}>
         <CSSTransition
           in={props.showValidation ?? false}
           mountOnEnter

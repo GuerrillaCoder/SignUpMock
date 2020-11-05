@@ -65,6 +65,8 @@ export default function SelectGscDomains({
             // setSelected((prev) => prev.filter((name) => name !== event.target.name));
         }
 
+        setState(prev => ({...prev, urls: []}));
+
     }
 
     function handleClick(event) {

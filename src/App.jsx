@@ -8,6 +8,7 @@ import CreateAccount from "./steps/CreateAccount";
 import GscVerify from './steps/GscVerify';
 import SelectGscDomains from "./steps/SelectGscDomains";
 import SetupComplete from "./steps/SetupComplete";
+import TrackBacklinks from "./steps/TrackBacklinks";
 
 
 export default function App() {
@@ -22,7 +23,7 @@ export default function App() {
     gscToken: null
   });
 
-  const [currentSlide, setCurrentSlide] = useState("SelectType");
+  const [currentSlide, setCurrentSlide] = useState("TrackBacklinksFree");
   const [lastValue, setLastValue] = useState(null);
   const [formState, setFormState] = useState({name: ""});
   const [slideHistory, setSlideHistory] = useState([])
@@ -44,6 +45,7 @@ export default function App() {
     },
     EnterDomain: {
       title: "Get Started",
+      next: "TrackBacklinksPro",
       component: <EnterDomaiun prev={true} next={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
       height:{
         0: "370px"
@@ -69,7 +71,7 @@ export default function App() {
     SelectGscDomains : {
       title: "Select Domains",
       component: <SelectGscDomains prev={false} showPrev={false} next={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
-      next: "SetupComplete",
+      next: "TrackBacklinksFree",
       height:{
         0: "540px"
       }
@@ -79,6 +81,22 @@ export default function App() {
       component: <SetupComplete state={details} />,
       height:{
         0: "500px"
+      }
+    },
+    TrackBacklinksFree: {
+      title: "Add URLs",
+      component: <TrackBacklinks movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
+      next: "SetupComplete",
+      height:{
+        0: "620px"
+      }
+    },
+    TrackBacklinksPro: {
+      title: "Add URLs",
+      component: <TrackBacklinks movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
+      next: "SetupComplete",
+      height:{
+        0: "620px"
       }
     }
   }
