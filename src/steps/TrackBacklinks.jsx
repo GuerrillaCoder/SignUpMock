@@ -98,11 +98,25 @@ export default function TrackBacklinks({state, setState, moveNext: parentMoveNex
     }
 
     return (
-        <div className="">
+        <CSSTransition
+      nodeRef={slideRef}
+        in={inProp}
+        onExited={move}
+        timeout={{
+          appear: 2000,
+          exit: 1000
+        }}
+        appear={true}
+        classNames={{
+          appearActive: entryDirection === "next" ?  "animate__animated animate__slideInRight" : "animate__animated animate__slideInLeft",
+          exitActive:  moveDirection === "next" ? "animate__animated animate__fadeOutLeft" : "animate__animated animate__fadeOutRight"
+        }}
+      >
+        <div ref={slideRef} className="">
             {console.log("component render")}
             {/* {console.log(currentSelection)} */}
             {showSelect && 
-                <Select values={values} onSelect={handleSelection} />
+                <Select values={values} onSelect={handleSelection} labelCharacters={38} />
             }
             <p className="mt-4 text-md font-semibold">Enter URL(s) containing backlinks to your site</p>
             <p className="text-sm italic">(You can skip this step if you like by clicking next)</p>
@@ -121,7 +135,7 @@ export default function TrackBacklinks({state, setState, moveNext: parentMoveNex
             {console.log(linkData[currentSelection.value].provider)}
             {console.log(linkData)} */}
             <TextInput placeHolder="ABC Link Vendor" hideValidation={true} value={linkData[currentSelection.value].provider} onChange={handleProvider} />
-            <p className="text-sm italic">(If you add a provider name here later on you can run reports just on this provider)</p>
+            <p className="text-sm italic mb-8">(If you add a provider name here later on you can run reports just on this provider)</p>
             <Buttons
                     back={true}
                     next={true}
@@ -132,5 +146,6 @@ export default function TrackBacklinks({state, setState, moveNext: parentMoveNex
                     
                     />
         </div>
+        </CSSTransition>
     )
 }

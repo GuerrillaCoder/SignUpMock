@@ -24,7 +24,7 @@ export default function App() {
     gscToken: null
   });
 
-  const [currentSlide, setCurrentSlide] = useState("SelectGscDomains");
+  const [currentSlide, setCurrentSlide] = useState("SelectType");
   const [lastValue, setLastValue] = useState(null);
   const [formState, setFormState] = useState({name: ""});
   const [slideHistory, setSlideHistory] = useState([])
@@ -81,7 +81,7 @@ export default function App() {
       title: "Setup Complete",
       component: <SetupComplete state={details} />,
       height:{
-        0: "500px"
+        0: "580px"
       }
     },
     TrackBacklinksFree: {
@@ -89,15 +89,15 @@ export default function App() {
       component: <TrackBacklinks movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
       next: "SetupComplete",
       height:{
-        0: "620px"
+        0: "615px"
       }
     },
     TrackBacklinksPro: {
       title: "Add URLs",
-      component: <TrackBacklinks movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
+      component: <TrackBacklinks showSelect={false} movePrev={movePrev} moveNext={moveNext} state={details} setState={setDetails} entryDirection={entryDirection} />,
       next: "SetupComplete",
       height:{
-        0: "620px"
+        0: "600px"
       }
     }
   }

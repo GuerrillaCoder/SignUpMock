@@ -100,8 +100,8 @@ export default function SelectGscDomains({
         }}
             appear={true}
             classNames={{
-            appearActive: "animate__animated animate__slideInRight",
-            exitActive: "animate__animated animate__fadeOutLeft"
+                appearActive: entryDirection === "next" ?  "animate__animated animate__slideInRight" : "animate__animated animate__slideInLeft",
+                exitActive:  moveDirection === "next" ? "animate__animated animate__fadeOutLeft" : "animate__animated animate__fadeOutRight"
         }}>
             <div ref={slideRef} className="">
                 <SubHead text={remaining + " Free domains remaining"} extraClasses="mb-4"/>

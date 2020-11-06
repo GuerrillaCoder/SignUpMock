@@ -99,8 +99,8 @@ export default function CreateAccount({state, setState, moveNext : parentMoveNex
                     next={emailValid && passValid}
                     // movePrev={props.movePrev}
                     // moveNext={props.moveNext}
-                    movePrev={startMoveback}
-                    moveNext={startMoveNext}
+                    movePrev={() => startMoveback()}
+                    moveNext={() => startMoveNext()}
                     
                     />
                 <div className="mt-6">
@@ -115,10 +115,10 @@ export default function CreateAccount({state, setState, moveNext : parentMoveNex
                         </div>
                     </div>
                     <div className="text-center w-3/4 mx-auto">
-                        <img onClick={startMoveNext} className="mx-auto h-14 mt-3" src="img/google-signin.png" alt=""/>
-                        <img onClick={startMoveNext} className="mx-auto h-12 mt-3" src="img/facebook_login.png" alt=""/>
-                        <img onClick={startMoveNext} className="mx-auto mt-3" src="img/signin-button-linkedin.png" alt=""/>
-                        <img onClick={startMoveNext} className="mx-auto mt-3" src="img/sign-in-with-twitter.png" alt=""/>
+                        <img onClick={() => startMoveNext()} className="mx-auto h-14 mt-3" src="img/google-signin.png" alt=""/>
+                        <img onClick={() => startMoveNext()} className="mx-auto h-12 mt-3" src="img/facebook_login.png" alt=""/>
+                        <img onClick={() => startMoveNext()} className="mx-auto mt-3" src="img/signin-button-linkedin.png" alt=""/>
+                        <img onClick={() => startMoveNext()} className="mx-auto mt-3" src="img/sign-in-with-twitter.png" alt=""/>
                     </div>
 
                 </div>

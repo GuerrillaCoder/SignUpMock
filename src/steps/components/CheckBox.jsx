@@ -26,13 +26,13 @@ export default function CheckBox({
     }
 
     return <label key={key} className="">
-        <input id={name} name={name} value={value} 
+        <input id={name} name={name} value={value}  
             onChange={(e) => {
                 e.persist();
                 parentChange(e);
             }}
 
-            type="checkbox" className="form-checkbox ml-2 h-5 w-5 text-gray-600" disabled={disabled} checked={selected}/>
+            type="checkbox" className="form-checkbox ml-2 h-5 w-5 text-gray-600" disabled={disabled} checked={checked}/>
         <span
             className={"ml-2 " + (checked
             ? "font-semibold "

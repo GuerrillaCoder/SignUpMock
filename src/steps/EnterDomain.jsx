@@ -4,13 +4,27 @@ import TextInput from "./components/TextInput";
 import isValidDomain from "is-valid-domain";
 import isUrl from "../helpers/url-helper";
 import { CSSTransition } from "react-transition-group";
+import useInProp from './hooks/useInProp';
 
 export default function EnterDomain(props) {
   const [valMessage, setValMessage] = useState("invisible");
-  const [nextEnable, setNextEnable] = useState(props.next);
+  
   const [prevEnable, setPrevEnable] = useState(props.prev);
-  const [inProp, setInProp] = useState(true);
+  const {
+    inProp,
+    startMoveback,
+    startMoveNext,
+    move,
+    moveDirection,
+    moveValue
+} = useInProp(props.movePrev, props.moveNext);
+
   const domainRef = useRef(null);
+
+  console.log(props.state.domains.length)
+
+  const [domain, setDomain] = useState(props.state.domains.length > 0 ? props.state.domains[0] : "");
+  const [nextEnable, setNextEnable] = useState(isUrl(domain));
 
   const [showValidation, setShowValidation] = useState(false);
 
@@ -33,13 +47,17 @@ export default function EnterDomain(props) {
   }
 
   function handleChange(event) {
-    if (isUrl(event.target.value)) {
+    let eventVal = event.target.value
+    if (isUrl(eventVal)) {
       // console.log(event.target.value + " is url");
       setNextEnable(true);
+      props.setState(prev => ({...prev, domains: [eventVal]}))
     } else {
       setNextEnable(false);
       // console.log(event.target.value + " is NOT url");
     }
+
+    setDomain(eventVal);
     
     clearTimeout(window.validateTimer);
     window.validateTimer = setTimeout(
@@ -48,7 +66,7 @@ export default function EnterDomain(props) {
         validate(val);
       },
       1000,
-      event.target.value
+      eventVal
     );
   }
 
@@ -56,16 +74,15 @@ export default function EnterDomain(props) {
     <CSSTransition
     nodeRef={domainRef}
       in={inProp}
-      // onExited={() => moveNext()}
+      onExited={move}
       timeout={{
         appear: 2000,
         exit: 1000
       }}
       appear={true}
       classNames={{
-        appearActive: "animate__animated animate__slideInRight"
-        // exitActive:
-        //   val === "free" ? selectedOutAnimation : notSelectedOutAnimation
+        appearActive: props.entryDirection === "next" ?  "animate__animated animate__slideInRight" : "animate__animated animate__slideInLeft",
+          exitActive:  moveDirection === "next" ? "animate__animated animate__fadeOutLeft" : "animate__animated animate__fadeOutRight"
       }}
     >
       <div ref={domainRef}>
@@ -81,6 +98,7 @@ export default function EnterDomain(props) {
           placeHolder="https://example.com"
           label="Domain"
           onChange={(event) => handleChange(event)}
+          value={domain}
         />
         <p className="mb-8 text-sm italic">
           You will be able to add in more domains to track later
@@ -88,8 +106,8 @@ export default function EnterDomain(props) {
         <Buttons
           back={true}
           next={nextEnable}
-          movePrev={props.movePrev}
-          moveNext={props.moveNext}
+          movePrev={startMoveback}
+          moveNext={startMoveNext}
         />
       </div>
     </CSSTransition>
