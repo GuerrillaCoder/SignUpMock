@@ -24,6 +24,7 @@
     "tailwindcss": "^1.9.6",
     "typescript": "3.8.3"
   },
+  "homepage": "./",
   "scripts": {
     "start": "cross-env PORT=6888 react-scripts start",
     "build": "react-scripts build",
