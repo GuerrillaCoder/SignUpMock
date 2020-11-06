@@ -16,14 +16,15 @@ export default function App() {
     title: "Create Account",
     name: null,
     accountType: null,
+    // domains: ["example1.com", "examfffffffffffsssssssssssssssssssssssssssssssssssffffffffple2.com", "example3.com"],
     domains: [],
-    links: null,
+    links: {},
     email: null,
     password: null,
     gscToken: null
   });
 
-  const [currentSlide, setCurrentSlide] = useState("TrackBacklinksFree");
+  const [currentSlide, setCurrentSlide] = useState("SelectGscDomains");
   const [lastValue, setLastValue] = useState(null);
   const [formState, setFormState] = useState({name: ""});
   const [slideHistory, setSlideHistory] = useState([])
@@ -152,11 +153,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <img
-          className="mx-auto h-12 w-auto"
-          src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg"
-          alt="Workflow"
-        />
+      <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/v1/workflow-mark-on-white.svg" alt="Workflow" />
         <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
           {slideConnections[currentSlide].title}
         </h2>

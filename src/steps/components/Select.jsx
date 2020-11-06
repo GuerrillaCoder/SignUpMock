@@ -15,8 +15,8 @@ export default function Select({values, labelCharacters, onSelect}) {
         setmaxLabelCharacter] = useState(labelCharacters ?? 45);
 
     useEffect(() => {
-        console.log("in select")
-        console.log(currentSelection);
+        // console.log("in select")
+        // console.log(currentSelection);
         onSelect(currentSelection);
         // if(currentSelection === {})
         // {

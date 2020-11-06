@@ -1,12 +1,13 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect, useLayoutEffect} from "react";
 import Buttons from "./components/Buttons";
 import {CSSTransition} from "react-transition-group";
 import SubHead from "./components/SubHead";
 import useInProp from './hooks/useInProp';
 import Select from './components/Select';
 import TextInput from './components/TextInput';
+import { isConstructSignatureDeclaration } from "typescript";
 
-export default function TrackBacklinks({state, setState, moveNext: parentMoveNext, movePrev: parentMovePrev, entryDirection}) {
+export default function TrackBacklinks({state, setState, moveNext: parentMoveNext, movePrev: parentMovePrev, entryDirection, showSelect = true}) {
 
     const {
         inProp,
@@ -18,11 +19,28 @@ export default function TrackBacklinks({state, setState, moveNext: parentMoveNex
     } = useInProp(parentMovePrev, parentMoveNext);
     const slideRef = useRef(null);
 
-    const [currentSelection, setCurrentSelection] = useState({});
+    const [currentSelection, setCurrentSelection] = useState(
+        {
+            label: state.domains[0],
+            value: state.domains[0],
+            selected: true
+        }
+        );
+    const [linkData, setLinkData] = useState(() => {
 
-    let domains = ["example1.com", "examfffffffffffsssssssssssssssssssssssssssssssssssffffffffple2.com", "example3.com"];
+        let links = ({...state.links} ?? {});
+        for(const domain of state.domains){
+            if(!links.hasOwnProperty(domain))
+            {
+                links[domain] = {urls:"", provider:""};
+            }
+        }
+        // console.log("Link data")
+        // console.log(links);
+        return links;
+    });
 
-    let values = domains.map((domain, index) => {
+    let values = state.domains.map((domain, index) => {
         return {
             label: domain,
             value: domain,
@@ -31,11 +49,30 @@ export default function TrackBacklinks({state, setState, moveNext: parentMoveNex
     });
 
     function saveLinks(event) {
-        console.log(event.target.value);
 
-        let currentIndex = domains.findIndex(domain => {
-            // domain == curr
-        })
+        const val = event.target.value
+        // console.log(val);
+
+        // setState(prev => {
+
+        //     let newState = ({...prev});
+
+        //     newState.links[currentSelection.value].urls= val;
+
+        //     console.log(newState);
+
+        //     return newState;
+        // })
+
+        setLinkData(prev => {
+            let newData = ({...linkData});
+            newData[currentSelection.value].urls = val;
+            return newData;
+        });
+
+        setState(prev => ({...state, links: linkData}));
+
+        // console.log(linkData);
 
     }
 
@@ -43,18 +80,36 @@ export default function TrackBacklinks({state, setState, moveNext: parentMoveNex
     {
         // console.log(value);
         setCurrentSelection(value);
-        console.log("in parent")
-        console.log(currentSelection);
+        // console.log("in parent")
+        // console.log(value);
+    }
+
+    function handleProvider(event)
+    {
+        const val = event.target.value
+
+        setLinkData(prev => {
+            let newData = ({...linkData});
+            newData[currentSelection.value].provider = val;
+            return newData;
+        });
+
+        setState(prev => ({...state, links: linkData}));
     }
 
     return (
         <div className="">
-            <Select values={values} onSelect={handleSelection} />
+            {console.log("component render")}
+            {/* {console.log(currentSelection)} */}
+            {showSelect && 
+                <Select values={values} onSelect={handleSelection} />
+            }
             <p className="mt-4 text-md font-semibold">Enter URL(s) containing backlinks to your site</p>
             <p className="text-sm italic">(You can skip this step if you like by clicking next)</p>
             <textarea
-            onBlur={saveLinks}
+            onChange={saveLinks}
             placeholder={'https://example1.com/my_link_is_here.html\nhttps://example2.com/my_link_is_also_here.html'}
+            value={linkData[currentSelection.value].urls}
                 name=""
                 id=""
                 cols=""
@@ -62,7 +117,10 @@ export default function TrackBacklinks({state, setState, moveNext: parentMoveNex
                 className="mt-3 resize-none rounded-md shadow-sm inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm leading-5 font-medium focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150"></textarea>
             <p className="text-sm italic">(We will check up to 1,000 per day for free)</p>
             <p className="mt-4 text-md font-semibold">Tag these URLs (optional)</p>
-            <TextInput placeHolder="ABC Link Vendor" hideValidation={true} />
+            {/* {console.log("provider")}
+            {console.log(linkData[currentSelection.value].provider)}
+            {console.log(linkData)} */}
+            <TextInput placeHolder="ABC Link Vendor" hideValidation={true} value={linkData[currentSelection.value].provider} onChange={handleProvider} />
             <p className="text-sm italic">(If you add a provider name here later on you can run reports just on this provider)</p>
             <Buttons
                     back={true}

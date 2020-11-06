@@ -27,6 +27,7 @@ export default function TextInput(props) {
           placeholder={props.placeHolder}
           required={props.required ?? false}
           defaultValue={props.defaultValue}
+          value={props.value}
           
         />
         </div>

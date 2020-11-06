@@ -30,7 +30,7 @@ export default function SelectGscDomains({
 
     let domains = [
         "example1.com",
-        "example2.com",
+        "exampleofaverylongdomainnamewhoevenhasadomainnamethislonglikeseriouslywtf.com",
         "example3.com",
         "example4.com",
         "example5.com",
@@ -116,6 +116,7 @@ export default function SelectGscDomains({
                                 <CheckBox
                                     checked={checked}
                                     disabled={!checked && remaining === 0}
+                                    labelMaxChar={26}
                                     label={domain}
                                     name={"checkbox_" + domain}
                                     value={domain}

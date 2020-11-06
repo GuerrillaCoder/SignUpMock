@@ -8,8 +8,22 @@ export default function CheckBox({
     selected,
     name,
     value,
-    onChange: parentChange
+    onChange: parentChange,
+    labelMaxChar
 }) {
+
+    function trimLabel(label)
+    {
+
+        if(label.length > labelMaxChar ?? 20)
+        {
+            return label.slice(0, labelMaxChar ?? 20) + "...";
+        }
+        else{
+            return label;
+        }
+        
+    }
 
     return <label key={key} className="">
         <input id={name} name={name} value={value} 
@@ -24,7 +38,10 @@ export default function CheckBox({
             ? "font-semibold "
             : "") + (disabled
             ? "text-gray-400"
-            : "text-gray-700")}>{label}</span>
+            : "text-gray-700")
+            }
+            title={label}
+            >{trimLabel(label)}</span>
     </label>
 
 }
