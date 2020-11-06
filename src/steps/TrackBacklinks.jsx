@@ -103,8 +103,8 @@ export default function TrackBacklinks({state, setState, moveNext: parentMoveNex
         in={inProp}
         onExited={move}
         timeout={{
-          appear: 2000,
-          exit: 1000
+          appear: 550,
+          exit: 550
         }}
         appear={true}
         classNames={{

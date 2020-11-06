@@ -95,8 +95,8 @@ export default function SelectGscDomains({
             in={inProp}
             onExited={move}
             timeout={{
-            appear: 800,
-            exit: 500
+            appear: 550,
+            exit: 550
         }}
             appear={true}
             classNames={{

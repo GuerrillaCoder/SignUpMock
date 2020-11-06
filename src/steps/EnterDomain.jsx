@@ -76,8 +76,8 @@ export default function EnterDomain(props) {
       in={inProp}
       onExited={move}
       timeout={{
-        appear: 2000,
-        exit: 1000
+        appear: 550,
+        exit: 550
       }}
       appear={true}
       classNames={{

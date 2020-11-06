@@ -15,8 +15,8 @@ export default function SetupComplete({state})
         nodeRef={slideRef}
           in={true}
           timeout={{
-            appear: 2000,
-            exit: 1000
+            appear: 550,
+            exit: 550
           }}
           appear={true}
           classNames={{
