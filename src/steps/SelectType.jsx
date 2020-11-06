@@ -93,8 +93,8 @@ export default function SelectType({state, setState, moveNext : parentMoveNext, 
         // onExited={() => moveNext()}
         onExited={move}
         timeout={{
-          appear: 2000,
-          exit: 1000
+          appear: 800,
+          exit: 500
         }}
         appear={true}
         classNames={{

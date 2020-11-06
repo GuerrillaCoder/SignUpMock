@@ -16,8 +16,8 @@ export default function GscVerify({state, setState, moveNext : parentMoveNext, m
         in={inProp}
         onExited={move}
         timeout={{
-          appear: 2000,
-          exit: 1000
+          appear: 800,
+          exit: 500
         }}
         appear={true}
         classNames={{

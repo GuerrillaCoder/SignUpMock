@@ -54,8 +54,8 @@ export default function CreateAccount({state, setState, moveNext : parentMoveNex
         in={inProp}
         onExited={move}
         timeout={{
-          appear: 2000,
-          exit: 1000
+          appear: 800,
+          exit: 500
         }}
         appear={true}
         classNames={{
